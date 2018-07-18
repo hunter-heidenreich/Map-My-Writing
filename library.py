@@ -2,11 +2,29 @@ import os
 
 from collections import Counter
 import string
+
+import datetime
+
+import nltk
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
 
-import nltk
+import numpy as np
+
+
+def get_datetimes(list_of_files):
+    """
+    Returns a list of datetimes from file names that are stamped with their datetime
+    --- E.G. "/some/path/to/year.month.day.ext" would be retrieved and time stamped
+    :param list_of_files: The list of file paths -- List[str]
+    :return: A numpy array of datetimes -- np.array[datetime]
+    """
+    base_files = [os.path.basename(f) for f in list_of_files]
+    no_ext = [os.path.splitext(f)[0] for f in base_files]
+    splits = [f.split('.') for f in no_ext]
+    times = np.array([datetime.datetime(int(t[0]), int(t[1]), int(t[2])) for t in splits])
+    return times
 
 
 def get_file_list(text_dir):
