@@ -7,9 +7,6 @@ from nltk.stem import SnowballStemmer
 from nltk.stem import WordNetLemmatizer
 
 import nltk
-from datetime import *
-
-from textblob import TextBlob
 
 
 def get_file_list(text_dir):
