@@ -1,5 +1,12 @@
 # Map-My-Writing
-Doing NLP analysis on text file collections (to visualize, to map, to understand)
+Doing NLP analysis on text file collections (to visualize, to map, to understand).
+
+Specifically, I'm visualizing writing that I've done that fall in the following sources:
+
+- Journal writings
+- Song lyrics
+- School work / essays
+- Social media data that I've posted / chatted / etc. 
 
 ## Outline
 - Word Frequency Analysis
