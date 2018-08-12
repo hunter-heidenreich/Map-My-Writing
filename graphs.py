@@ -40,7 +40,8 @@ def plot_table(cell_data, row_labels=None, col_labels=None, export=False, export
     """
     _ = plt.figure(figsize=(6, 1))
 
-    _ = plt.table(cellText=cell_data, rowLabels=row_labels, colLabels=col_labels, loc='center')
+    _ = plt.table(cellText=cell_data, rowLabels=row_labels,
+                  colLabels=col_labels, loc='center')
 
     plt.axis('off')
     plt.grid(False)

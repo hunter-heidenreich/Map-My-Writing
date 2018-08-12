@@ -4,3 +4,5 @@ __pycache__/
 venv/
 facebook-hunterheidenreich/
 data/
+fastText/
+wiki*
