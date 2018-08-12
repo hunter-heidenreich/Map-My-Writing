@@ -1,24 +1,16 @@
 from allennlp.commands.elmo import ElmoEmbedder
 
 import numpy as np
-
-# from sklearn.linear_model import SGDClassifier
+import os
 
 from keras.datasets import imdb
-
-from keras.layers import Embedding
 from keras.layers.core import Dense, Flatten
 from keras.layers.convolutional import Conv1D, MaxPooling1D
-
 from keras.preprocessing import sequence
-
 from keras.models import Sequential
 
-import pickle
 
 from sigopt import Connection
-
-import time
 
 import fastText
 
@@ -34,8 +26,10 @@ class SentimentAnalyzer:
                                        self.y_test) = imdb.load_data(num_words=top_words)
 
         max_words = self.opt['max_words']
-        self.X_train = sequence.pad_sequences(self.X_train, maxlen=max_words)
-        self.X_test = sequence.pad_sequences(self.X_test, maxlen=max_words)
+        self.X_train = sequence.pad_sequences(
+            self.X_train, maxlen=max_words)
+        self.X_test = sequence.pad_sequences(
+            self.X_test, maxlen=max_words)
 
         self.classifier = self._create_classifier(opt)
 
@@ -61,8 +55,10 @@ class SentimentAnalyzer:
 
     def _data_generator(self):
         for i in range(len(self.X_train // self.opt['batch_size'])):
-            X_sample = self.X_train[i * self.opt['batch_size']                                    :i * self.opt['batch_size'] + self.opt['batch_size']]
-            y_sample = self.y_train[i * self.opt['batch_size']                                    :i * self.opt['batch_size'] + self.opt['batch_size']]
+            X_sample = self.X_train[i * self.opt['batch_size']
+                :i * self.opt['batch_size'] + self.opt['batch_size']]
+            y_sample = self.y_train[i * self.opt['batch_size']
+                :i * self.opt['batch_size'] + self.opt['batch_size']]
 
             X_sample = [[self.ft.get_word_vector(
                 word) for word in fastText.tokenize(sent)]for sent in X_sample]
@@ -87,7 +83,7 @@ class SentimentAnalyzer:
 
 if __name__ == '__main__':
     conn = Connection(
-        client_token="OYKPETGTWWUGWZYDKLBMUMOAGXIPKACPDHTTZJFYXCONTVPJ")
+        client_token=os.environ['SIGOPT_TOKEN'])
     # experiment = conn.experiments().create(
     #     name='Simple CNN Sentiment Analysis Hyperparameter Search',
     #     parameters=[
