@@ -22,8 +22,8 @@ class SentimentAnalyzer:
             '/Users/hunterheidenreich/git/MapMyWriting/crawl-300d-2M.vec')
 
         top_words = self.opt['top_words']
-        (self.X_train, self.y_train), (self.X_test,
-                                       self.y_test) = imdb.load_data(num_words=top_words)
+        (self.X_train, self.y_train), \
+            (self.X_test, self.y_test) = imdb.load_data(num_words=top_words)
 
         max_words = self.opt['max_words']
         self.X_train = sequence.pad_sequences(
@@ -31,7 +31,7 @@ class SentimentAnalyzer:
         self.X_test = sequence.pad_sequences(
             self.X_test, maxlen=max_words)
 
-        self.classifier = self._create_classifier(opt)
+        self.classifier = self._create_classifier()
 
     def train_classifier(self):
         return self._train_classifier()
@@ -42,7 +42,8 @@ class SentimentAnalyzer:
 
     def _create_classifier(self):
         model = Sequential()
-        model.add(Conv1D(filters=np.power(2, self.opt['filters']), kernel_size=self.opt['kernel_size'],
+        model.add(Conv1D(filters=np.power(2, self.opt['filters']),
+                         kernel_size=self.opt['kernel_size'],
                          padding='same', activation='relu'))
         model.add(MaxPooling1D(pool_size=self.opt['pool_size']))
         model.add(Flatten())
@@ -81,7 +82,7 @@ class SentimentAnalyzer:
         return self.classifier.fit_generator(self._data_generator(), epochs=3)
 
 
-if __name__ == '__main__':
+def run_sigopt_optimization():
     conn = Connection(
         client_token=os.environ['SIGOPT_TOKEN'])
     # experiment = conn.experiments().create(
@@ -111,3 +112,7 @@ if __name__ == '__main__':
             suggestion=suggestion.id,
             value=value[1],
         )
+
+
+if __name__ == '__main__':
+    run_sigopt_optimization()
